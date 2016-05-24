@@ -146,11 +146,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\StringList\ListIterators.h" />
     <ClInclude Include="..\StringList\StringList.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\StringList\ListIterators.cpp" />
     <ClCompile Include="..\StringList\StringList.cpp" />
     <ClCompile Include="LogFormatter.cpp" />
     <ClCompile Include="stdafx.cpp">

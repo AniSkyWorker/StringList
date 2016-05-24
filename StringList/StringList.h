@@ -1,40 +1,51 @@
-
+#pragma once
 #include <string>
 #include <memory>
 
+class CListIterator;
+
 class CStringList
 {
-	struct Node
+	friend class CListIterator;
+	struct SNode
 	{
-		Node(const std::string & data, Node * prev, std::unique_ptr<Node> && next)
+		SNode(const std::string & data, SNode * prev, std::unique_ptr<SNode> && next)
 			: data(data), prev(prev), next(std::move(next))
 		{
 		}
 		std::string data;
-		Node *prev;
-		std::unique_ptr<Node> next;
+		SNode *prev;
+		std::unique_ptr<SNode> next;
 	};
 public:
-	size_t GetSize()const;
-	void Append(const std::string& data);
+	size_t GetSize() const;
 
-	class CIterator
-	{
-		friend CStringList;
-		CIterator(Node *node);
-	public:
-		CIterator() = default;
-		std::string & operator*()const;
-	private:
-		Node *m_node = nullptr;
-	};
+	void PushBack(const std::string & data);
+	void PushFront(const std::string & data);
 
-	CIterator begin();
+	void Clear();
+	bool IsEmpty() const;
 
 	std::string & GetBackElement();
-	std::string const& GetBackElement()const;
+	const std::string & GetBackElement()const;
+	std::string & GetFrontElement();
+	const std::string & GetFrontElement()const;
+
+	CListIterator begin();
+	CListIterator end();
+	const CListIterator cbegin() const;
+	const CListIterator cend() const;
+
+	CListIterator rbegin();
+	CListIterator rend();
+	const CListIterator crbegin() const;
+	const CListIterator crend() const;
+
+	void Insert(const CListIterator & it, const std::string & data);
+	void Erase(const CListIterator & it);
+
 private:
 	size_t m_size = 0;
-	std::unique_ptr<Node> m_firstNode;
-	Node * m_lastNode = nullptr;
+	std::unique_ptr<SNode> m_firstNode = nullptr;
+	SNode * m_lastNode = nullptr;
 };
