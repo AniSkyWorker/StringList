@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <iostream>
 #include "../StringList/StringList.h"
 #include "../StringList/ListIterators.h"
 
@@ -8,6 +9,16 @@ struct EmptyStringList
 {
 	CStringList list;
 };
+
+void VerifyList(CStringList & list, std::vector<string> & expectedElements)
+{
+	size_t counter = 0;
+	for (auto it = list.cbegin(); it != list.cend(); ++it)
+	{
+		BOOST_CHECK_EQUAL(*it, expectedElements[counter]);
+		counter++;
+	}
+}
 
 BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 
@@ -119,13 +130,6 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 				BOOST_CHECK_EQUAL(*it, expectedStrings[counter]);
 				counter--;
 			}
-
-			counter = expectedStrings.size() - 1;
-			for (auto it = list.crbegin(); it != list.crend(); ++it)
-			{
-				BOOST_CHECK_EQUAL(*it, expectedStrings[counter]);
-				counter--;
-			}
 		}
 
 		BOOST_AUTO_TEST_CASE(can_get_acsses_to_elements_from_range_based_for)
@@ -173,6 +177,12 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 			BOOST_CHECK(list.IsEmpty());
 		}
 
+		BOOST_AUTO_TEST_CASE(have_copy_constructor)
+		{
+			CStringList list1(list);
+			VerifyList(list, expectedStrings);
+			VerifyList(list1, expectedStrings);
+		}
 
 	BOOST_AUTO_TEST_SUITE_END()
 

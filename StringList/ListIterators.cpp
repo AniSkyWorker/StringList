@@ -29,13 +29,27 @@ std::string & CListIterator::operator*() const
 
 CListIterator & CListIterator::operator++()
 {
-	m_isReverse ? m_node = m_node->prev : m_node = m_node->next.get();
+	if (m_isReverse)
+	{ 
+		m_node = m_node->prev;
+	}
+	else
+	{
+		m_node = m_node->next.get();
+	}
 	return *this;
 }
 
 CListIterator & CListIterator::operator--()
 {
-	m_isReverse ? m_node = m_node->next.get() : m_node = m_node->prev;
+	if (m_isReverse)
+	{
+		m_node = m_node->next.get();
+	}
+	else
+	{
+		m_node = m_node->prev;
+	}
 	return *this;
 }
 

@@ -5,6 +5,27 @@
 
 using namespace std;
 
+CStringList::CStringList()
+{
+}
+
+CStringList::CStringList(CStringList & list)
+{
+	CStringList toCopy;
+	for (auto element : list)
+	{
+		toCopy.PushBack(element);
+	}
+	std::swap(m_firstNode, toCopy.m_firstNode);
+	std::swap(m_lastNode, toCopy.m_lastNode);
+	m_size = toCopy.m_size;
+}
+
+CStringList::~CStringList()
+{
+	Clear();
+}
+
 size_t CStringList::GetSize() const
 {
 	return m_size;
@@ -45,22 +66,22 @@ void CStringList::PushFront(const std::string & data)
 
 CListIterator CStringList::begin()
 {
-	return CListIterator(m_firstNode.get());
+	return CListIterator(m_firstNode.get(), false);
 }
 
 CListIterator CStringList::end()
 {
-	return CListIterator(m_lastNode->next.get());
+	return CListIterator(m_lastNode->next.get(), false);
 }
 
 const CListIterator CStringList::cbegin() const
 {
-	return CListIterator(m_firstNode.get());
+	return CListIterator(m_firstNode.get(), false);
 }
 
 const CListIterator CStringList::cend() const
 {
-	return CListIterator(m_lastNode->next.get());
+	return CListIterator(m_lastNode->next.get(), false);
 }
 
 CListIterator CStringList::rbegin()
@@ -108,6 +129,7 @@ void CStringList::Erase(const CListIterator & it)
 		Clear();
 		return;
 	}
+
 	if (it == begin())
 	{
 		it->next->prev = nullptr;
@@ -124,7 +146,10 @@ void CStringList::Erase(const CListIterator & it)
 		it->prev->next = move(it->next);
 	}
 
-	m_size == 0 ? m_size : m_size--;
+	if (m_size > 0)
+	{
+		m_size--;
+	}
 }
 
 void CStringList::Clear()

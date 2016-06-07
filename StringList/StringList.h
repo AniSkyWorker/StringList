@@ -18,6 +18,10 @@ class CStringList
 		std::unique_ptr<SNode> next;
 	};
 public:
+	CStringList();
+	CStringList(CStringList & list);
+	~CStringList();
+
 	size_t GetSize() const;
 
 	void PushBack(const std::string & data);
@@ -27,9 +31,9 @@ public:
 	bool IsEmpty() const;
 
 	std::string & GetBackElement();
-	const std::string & GetBackElement()const;
+	const std::string & GetBackElement() const;
 	std::string & GetFrontElement();
-	const std::string & GetFrontElement()const;
+	const std::string & GetFrontElement() const;
 
 	CListIterator begin();
 	CListIterator end();
